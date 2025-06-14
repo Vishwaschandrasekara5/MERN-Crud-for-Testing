@@ -1,14 +1,15 @@
 //MeCIZfuUq1Yg1T2d
 const express = require("express");
 const mongoose = require("mongoose");
+const router = require("./Routes/UserRoutes");
 
 const app = express();
 
 //Middlerware
 
-app.use("/", (req, res, next) => {
-    res.send("Ït is Working");
-})
+app.use(express.json()); 
+app.use("/",router);
+
 
 mongoose.connect("mongodb+srv://admin:MeCIZfuUq1Yg1T2d@cluster0.67s5tt9.mongodb.net/")
 .then(()=>console.log("Connected to MongoDB"))
