@@ -1,0 +1,12 @@
+# Node dependencies
+node_modules/
+
+# Environment variables
+.env
+
+# OS and editor junk files
+.DS_Store
+*.log
+
+# Optional
+package-lock.json
