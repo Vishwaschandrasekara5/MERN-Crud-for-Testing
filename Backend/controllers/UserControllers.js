@@ -1,4 +1,5 @@
 const user = require("../Model/UserModel");
+const { param } = require("../Routes/UserRoutes");
 
 
 const getAllUsers = async (req, res) => {
@@ -36,8 +37,27 @@ const addusers = async (req, res, next) => {
     if(!users){
         return res.status(404).json({message:"Unable to add user"})
     }
-
+ 
     return res.status(200).json({users})
 }
 
-module.exports = {getAllUsers, addusers}
+const getbyid = async(req, res) =>{
+
+    const id = req.params.id;
+
+    let User;
+
+    try{
+        User = await user.findById(id);
+    }catch(err){
+        console.log(err);
+    }
+
+    if(!User){
+       return res.status(404).json({message:"User not found"})
+    }
+
+    return res.status(200).json({User})
+}
+
+module.exports = {getAllUsers, addusers, getbyid}
