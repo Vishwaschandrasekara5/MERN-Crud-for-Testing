@@ -1,0 +1,14 @@
+.home-ul {
+  display: flex;
+  background-color: #333;
+  align-items: center;
+  font-size: 10px;
+  color: white;
+  
+}
+.home-ll,
+.home-a {
+  display: block;
+  padding: 4px 16px;
+  text-decoration: none;
+}
