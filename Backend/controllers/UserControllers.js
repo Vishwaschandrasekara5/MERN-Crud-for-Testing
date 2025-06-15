@@ -83,4 +83,22 @@ const updateuser = async(req, res) =>{
 
 }
 
-module.exports = {getAllUsers, addusers, getbyid, updateuser}
+const deleteuser = async (req, res) => {
+
+    const id = req.params.id;
+
+    let User;
+
+    try{
+        User = await user.findByIdAndDelete(id);
+    }catch(err){
+        console.log(err);
+    }
+    if(!User){
+        return res.status(404).json({message:"Unable to delete user"})
+    }
+
+    return res.status(200).json({User})
+}
+
+module.exports = {getAllUsers, addusers, getbyid, updateuser, deleteuser}
