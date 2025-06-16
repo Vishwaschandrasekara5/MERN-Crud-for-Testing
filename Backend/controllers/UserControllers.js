@@ -10,6 +10,7 @@ const getAllUsers = async (req, res) => {
        users = await user.find(); 
     }catch(err){
         console.log(err);
+        return res.status(500).json({ message: "Error fetching users" });
         
     }
 
@@ -65,22 +66,25 @@ const updateuser = async(req, res) =>{
     const id = req.params.id;
     const {name, email, age, address} = req.body;
 
-    let User;
+    try {
+        const updatedUser = await user.findByIdAndUpdate(
+            id,
+            { name, email, age, address },
+            { new: true }  // This ensures we get the updated document back
+        );
 
-    try{
-        User = await user.findByIdAndUpdate(id, {name, email, age, address});
-        await User.save();
-    }
-    catch(err){
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        return res.status(200).json({ 
+            message: "User updated successfully",
+            user: updatedUser 
+        });
+    } catch (err) {
         console.log(err);
+        return res.status(500).json({ message: "Error updating user" });
     }
-
-     if(!User){
-       return res.status(404).json({message:"Unable to update user"})
-    }
-
-    return res.status(200).json({User})
-
 }
 
 const deleteuser = async (req, res) => {

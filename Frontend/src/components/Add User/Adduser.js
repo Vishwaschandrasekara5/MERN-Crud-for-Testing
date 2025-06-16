@@ -11,6 +11,7 @@ function Adduser() {
     age: "",
     address: "",
   });
+  const [error, setError] = useState(null);
 
   const handlechange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -18,49 +19,98 @@ function Adduser() {
 
   const handlesubmit = async (e) => {
     e.preventDefault();
-    await sendRequest();
-    history("/user"); 
+    setError(null);
+    try {
+      const response = await sendRequest();
+      console.log("User added successfully:", response);
+      history("/userdetails"); // Redirecting to userdetails page
+    } catch (error) {
+      console.error("Error adding user:", error);
+      setError(error.response?.data?.message || "Failed to add user. Please try again.");
+    }
   };
 
   const sendRequest = async () => {
-    await axios.post("http://localhost:5000/", {
+    const response = await axios.post("http://localhost:5000/", {
       name: String(inputs.name),
       email: String(inputs.email),
       age: Number(inputs.age),
       address: String(inputs.address),
     });
+    return response.data;
   };
 
   return (
     <div>
       <Navbar />
-      <h1>This is add user page</h1>
+      <h1>Add New User</h1>
+      {error && (
+        <div style={{ color: 'red', margin: '10px 0', padding: '10px', backgroundColor: '#ffe6e6' }}>
+          {error}
+        </div>
+      )}
       <form onSubmit={handlesubmit}>
         <label>Name</label>
         <br />
-        <input type="text" name="name" onChange={handlechange} value={inputs.name} required />
+        <input 
+          type="text" 
+          name="name" 
+          onChange={handlechange} 
+          value={inputs.name} 
+          required 
+        />
         <br />
         <br />
 
         <label>Email</label>
         <br />
-        <input type="email" name="email" onChange={handlechange} value={inputs.email} required />
+        <input 
+          type="email" 
+          name="email" 
+          onChange={handlechange} 
+          value={inputs.email} 
+          required 
+        />
         <br />
         <br />
 
         <label>Age</label>
         <br />
-        <input type="number" name="age" onChange={handlechange} value={inputs.age} required />
+        <input 
+          type="number" 
+          name="age" 
+          onChange={handlechange} 
+          value={inputs.age} 
+          required 
+        />
         <br />
         <br />
 
         <label>Address</label>
         <br />
-        <input type="text" name="address" onChange={handlechange} value={inputs.address} required />
+        <input 
+          type="text" 
+          name="address" 
+          onChange={handlechange} 
+          value={inputs.address} 
+          required 
+        />
         <br />
         <br />
 
-        <button type="submit">Add User</button>
+        <button 
+          type="submit"
+          style={{ 
+            padding: '10px 20px', 
+            backgroundColor: '#4CAF50', 
+            color: 'white', 
+            border: 'none', 
+            borderRadius: '4px', 
+            cursor: 'pointer' 
+          }}
+        >
+          Add User
+        </button>
       </form>
     </div>
   );

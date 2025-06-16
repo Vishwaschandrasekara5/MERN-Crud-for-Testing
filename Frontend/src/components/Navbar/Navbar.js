@@ -13,7 +13,7 @@ function Navbar() {
             <Link to="/add"><h1>Add User</h1></Link>
         </li>
         <li className='home-ll'>
-            <Link to="/user"><h1>User Details</h1></Link>
+            <Link to="/userdetails"><h1>User Details</h1></Link>
         </li>
       </ul>
     </div>
