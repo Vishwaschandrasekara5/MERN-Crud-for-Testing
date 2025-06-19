@@ -24,19 +24,41 @@ function Userdetail() {
         onAfterPrint: () => alert('Users Report Successfully Downloaded')
     });
 
+    const [searchQuery, setSearchQuery] = useState("");
+    const [noResults, setNoResults] = useState(false);
 
+    const handleSearch = () => {
+        fetchHandler().then((data) => {
+            const filteredUsers = data.users.filter(user =>
+                user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                user.email.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+            setUsers(filteredUsers);
+            setNoResults(filteredUsers.length === 0);
+        });
+    }
 
     return (
         <div>
             <Nav/>
             <h1>User Details Display Page</h1>
-            <div className="users-container" ref={componentsRef}>
+            <input onChange={(e)=> setSearchQuery(e.target.value)} type="text" name='search' placeholder='Search by name or email'></input>
+            <button onClick={handleSearch}>Search</button>
+
+            {noResults ? (
+                <div>
+                    <p>No users found</p>
+                </div>
+            ):(
+                 <div className="users-container" ref={componentsRef}>
                 {users && users.map((user, i) => (
                     <div key={i}>
                         <User user={user} />
                     </div>
                 ))}
             </div>
+            )}
+           
             <button onClick={handlePrint}>Download Report</button>
         </div>
     )
